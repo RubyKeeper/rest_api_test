@@ -2,10 +2,19 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Interfaces\ClientsHttpInterface;
 use Illuminate\Http\Request;
 
 class CompanyDataController extends Controller
 {
+    private $clientHttp;
+
+    public function __construct(ClientsHttpInterface $clientsHttp)
+    {
+        $this->clientHttp = $clientsHttp;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -35,9 +44,9 @@ class CompanyDataController extends Controller
      */
     public function show($id)
     {
-//        return response('Здесь будет перечень объявлений.')
-//            ->header('Content-Type', 'text/plain');
-        return response()->json([4, 5, 8, '4']);
+        return $this->clientHttp->sendRequest(256654);
+
+//        return response()->json('h');
     }
 
     /**
