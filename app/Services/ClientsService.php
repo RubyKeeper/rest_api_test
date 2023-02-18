@@ -62,7 +62,7 @@ class ClientsService
      *
      * @return array
      */
-    public function getClients(array $clientsHttp): array
+    private function getClients(array $clientsHttp): array
     {
         $this_date = date('Ymd');
         $client_list_redis = $this->redis->zrevrangebyscore('stats:'.$this_date, '+inf', '10'); // все записи у которых балл выше 10
