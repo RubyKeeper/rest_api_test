@@ -2,18 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Clients\DadataClient;
+use App\Clients\RamisClient;
+use App\Clients\WarmsClient;
 
-use App\Interfaces\ClientsHttpInterface;
+use App\Services\ClientsService;
 use Illuminate\Http\Request;
 
 class CompanyDataController extends Controller
 {
-    private $clientHttp;
-
-    public function __construct(ClientsHttpInterface $clientsHttp)
-    {
-        $this->clientHttp = $clientsHttp;
-    }
 
     /**
      * Display a listing of the resource.
@@ -44,9 +41,13 @@ class CompanyDataController extends Controller
      */
     public function show($id)
     {
-        return $this->clientHttp->sendRequest(256654);
+        $clients = [
+            RamisClient::class,
+            WarmsClient::class,
+            DadataClient::class
+        ];
 
-//        return response()->json('h');
+        return (new ClientsService($clients))->getOrganizationByInn($id);
     }
 
     /**
