@@ -11,6 +11,16 @@ use Illuminate\Http\Request;
 
 class CompanyDataController extends Controller
 {
+    private $clients = [
+        RamisClient::class,
+        WarmsClient::class,
+        DadataClient::class
+    ];
+
+    public function __construct(ClientsService $clientsService)
+    {
+        $this->clientsService = $clientsService;
+    }
 
     /**
      * Display a listing of the resource.
@@ -19,7 +29,10 @@ class CompanyDataController extends Controller
      */
     public function index()
     {
-        //
+        $service = new $this->clientsService($this->clients);
+        $arrayClients = $service->getRedisClientsStats();
+        $dataCompany = $service->getOrganizationByInn(0276073077);
+        return view('index', ['arrayClients' => $arrayClients, 'json' => $dataCompany]);
     }
 
     /**
@@ -41,13 +54,8 @@ class CompanyDataController extends Controller
      */
     public function show($id)
     {
-        $clients = [
-            RamisClient::class,
-            WarmsClient::class,
-            DadataClient::class
-        ];
-
-        return (new ClientsService($clients))->getOrganizationByInn($id) ?? response()->json(null, 204);
+        $service = new $this->clientsService($this->clients);
+        return $service->getOrganizationByInn($id) ?? response()->json(null, 204);
     }
 
     /**

@@ -18,13 +18,13 @@ class ClientsService
             // имитация отрицательного ответа или долгого ответа
             switch (rand(0,2)) {
                 case 0:
-                    $response = $item->sendRequest($inn);
+                    $response = (new $item)->sendRequest($inn);
                     break;
                 case 1;
                     $response = false;
                     break;
                 case 2;
-                    $response = $item->sendRequest($inn);
+                    $response = (new $item)->sendRequest($inn);
                     sleep(1);
                     break;
             }
@@ -35,10 +35,11 @@ class ClientsService
             if (!$response or (microtime(true) - $start) > 1) {
                 continue;
             } else {
-                $class_name = get_class($item);
+                $class_name = $item;
                 $this->setRedisClient($class_name);
                 return $response;
             }
+
         }
         return null;
     }
@@ -80,7 +81,7 @@ class ClientsService
 
         $arrayClients = [];
         foreach ($namespace_array as $clientsHttp) {
-            $arrayClients[] = new $clientsHttp;
+            $arrayClients[] = $clientsHttp;
         }
 
         return $arrayClients;
