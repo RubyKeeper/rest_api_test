@@ -47,7 +47,7 @@ class CompanyDataController extends Controller
             DadataClient::class
         ];
 
-        return (new ClientsService($clients))->getOrganizationByInn($id);
+        return (new ClientsService($clients))->getOrganizationByInn($id) ?? response()->json(null, 204);
     }
 
     /**
