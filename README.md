@@ -35,7 +35,10 @@ docker-compose up -d --build
 ```php
 ./vendor/bin/sail up -d --build
 ```
-
+устанавливаем все зависимости (composer уже есть в проекте):
+```azure
+./vendor/bin/sail php composer.phar install or composer install
+```
 в браузере проект доступен по адресам localhost и laravel.test 
 (для запуска laravel.test, требуется редактирование /etc/hosts)
 
@@ -60,8 +63,13 @@ http://localhost/api/company-data/{инн}/
 
 http://laravel.test/api/company-data/{инн}/
 ```
+проверить можно используя инструмент Phpstorm или с помощью терминала, введя команду:
 
-## Основной сервис выполняющий работу app/Services/ClientsService.php
+```
+$ curl -H 'content-type: application/json' -H 'Accept: application/json' -v -X GET http://localhost/api/company-data/{инн}/
+```
+
+## Основной сервис ClientsService.php
 
 ```
 app/Services/ClientsService.php
